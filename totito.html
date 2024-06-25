@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Totito</title>
+    <style>
+        body {
+            background: #DC2424;  /* fallback for old browsers */
+            background: -webkit-linear-gradient(to right, #4A569D, #DC2424);  /* Chrome 10-25, Safari 5.1-6 */
+            background: linear-gradient(to right, #4A569D, #DC2424); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+            
+        }
+        .cuadro {
+            width: 200px;
+            height: 200px;
+            position: absolute; top: 250px; left: 550px;
+            border: black solid 5px;
+        }
+        .linea1 {
+            width: 5px;
+            height: 200px;
+            background: black;
+        }
+
+        .linea2 {
+            width: 200px;
+            height: 5px;
+            background: black;
+        }
+
+        .boton_casilla {
+            width: 200px;
+            height: 200px;
+            background-color: transparent;
+            border: transparent;
+            text-align: left;
+        }
+
+        .botones_utilidad {
+            height: 30px;
+            min-width: 100px;
+            max-width: fit-content;
+            background: lawngreen;
+            font-family: Inter ExtraBold;
+            font-size: 15px;
+
+        }
+        .botones_utilidad:disabled {
+            background-color: #DC2424;
+        }
+
+        .textos {
+            font-family: Inter ExtraBold;
+            font-size: 20px;
+            color: white;
+        }
+        
+        .resultado {
+            display: none;
+            background: white;
+            width: 370px;
+            height: 200px;
+            border-radius: 10px;
+            position: relative; left: 510px; top: 140px;
+            color: rgb(54, 60, 93);
+            text-align: center;
+            font-family: Inter ExtraBold;
+            line-height: 200px;
+            font-size: 25px;
+            box-shadow: 10px 10px 10000px 800px  rgba(0, 0, 0, 0.450);
+        }
+
+        .contadores {
+            color: white;
+            font-family: Inter ExtraBold;
+            font-size: 40px;
+
+        }
+    </style>
+    <script>
+        //Hacer una bandera que cuando sea 0 sea el turno de X y cuando sea 1 sea el turno de O (listo)
+        //Otra bandera que registre en determinado cuadro que figura fue puesta para poder comparar las filas y diagonales y asi saber quien gano
+        //Cuando se junten tres banderas de las otras que se active otra bandera que muestre cual figura es lq eue ha ganado
+        turno = 0;
+        unouno = 0;
+        unodos = 0;
+        unotres = 0;
+        dosuno = 0;
+        dosdos = 0;
+        dostres = 0;
+        tresuno = 0;
+        tresdos = 0;
+        trestres = 0;
+        contadorx2 = 0;
+        contadoro2 = 0;
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+          }
+        function juego1() {
+            if (turno == 0) { //turno de las X
+                turno = 1;
+                document.getElementById("xturno").style.display = "none";
+                document.getElementById("x1").style.display = "inline";
+                document.getElementById("oturno").style.display = "inline";
+                unouno = 1
+                comprobar()
+            } else {
+                turno = 0;
+                document.getElementById("oturno").style.display = "none";
+                document.getElementById("o1").style.display = "inline";
+                document.getElementById("xturno").style.display = "inline";
+                unouno = 2
+                comprobar()
+            }
+            document.getElementById("casilla1,1").disabled = true;
+        }
+        function juego2() {
+            if (turno == 0) { //turno de las X
+                turno = 1;
+                document.getElementById("xturno").style.display = "none";
+                document.getElementById("x2").style.display = "inline";
+                document.getElementById("oturno").style.display = "inline";
+                unodos = 1
+                comprobar()
+            } else {
+                turno = 0;
+                document.getElementById("oturno").style.display = "none";
+                document.getElementById("o2").style.display = "inline";
+                document.getElementById("xturno").style.display = "inline";
+                unodos = 2
+                comprobar()
+            }
+            document.getElementById("casilla1,2").disabled = true;
+        }
+        function juego3() {
+            if (turno == 0) { //turno de las X
+                turno = 1;
+                document.getElementById("xturno").style.display = "none";
+                document.getElementById("x3").style.display = "inline";
+                document.getElementById("oturno").style.display = "inline";
+                unotres = 1
+                comprobar()
+            } else {
+                turno = 0;
+                document.getElementById("oturno").style.display = "none";
+                document.getElementById("o3").style.display = "inline";
+                document.getElementById("xturno").style.display = "inline";
+                unotres = 2
+                comprobar()
+            }
+            document.getElementById("casilla1,3").disabled = true;
+        }
+        function juego4() {
+            if (turno == 0) { //turno de las X
+                turno = 1;
+                document.getElementById("xturno").style.display = "none";
+                document.getElementById("x4").style.display = "inline";
+                document.getElementById("oturno").style.display = "inline";
+                dosuno = 1
+                comprobar()
+            } else {
+                turno = 0;
+                document.getElementById("oturno").style.display = "none";
+                document.getElementById("o4").style.display = "inline";
+                document.getElementById("xturno").style.display = "inline";
+                dosuno = 2
+                comprobar()
+            }
+            document.getElementById("casilla2,1").disabled = true;
+        }
+        function juego5() {
+            if (turno == 0) { //turno de las X
+                turno = 1;
+                document.getElementById("xturno").style.display = "none";
+                document.getElementById("x5").style.display = "inline";
+                document.getElementById("oturno").style.display = "inline";
+                dosdos = 1
+                comprobar()
+            } else {
+                turno = 0;
+                document.getElementById("oturno").style.display = "none";
+                document.getElementById("o5").style.display = "inline";
+                document.getElementById("xturno").style.display = "inline";
+                dosdos = 2
+                comprobar()
+            }
+            document.getElementById("casilla2,2").disabled = true;
+        }
+        function juego6() {
+            if (turno == 0) { //turno de las X
+                turno = 1;
+                document.getElementById("xturno").style.display = "none";
+                document.getElementById("x6").style.display = "inline";
+                document.getElementById("oturno").style.display = "inline";
+                dostres = 1
+                comprobar()
+            } else {
+                turno = 0;
+                document.getElementById("oturno").style.display = "none";
+                document.getElementById("o6").style.display = "inline";
+                document.getElementById("xturno").style.display = "inline";
+                dostres = 2
+                comprobar()
+            }
+            document.getElementById("casilla2,3").disabled = true;
+        }
+        function juego7() {
+            if (turno == 0) { //turno de las X
+                turno = 1;
+                document.getElementById("xturno").style.display = "none";
+                document.getElementById("x7").style.display = "inline";
+                document.getElementById("oturno").style.display = "inline";
+                tresuno = 1
+                comprobar()
+            } else {
+                turno = 0;
+                document.getElementById("oturno").style.display = "none";
+                document.getElementById("o7").style.display = "inline";
+                document.getElementById("xturno").style.display = "inline";
+                tresuno = 2
+                comprobar()
+            }
+            document.getElementById("casilla3,1").disabled = true;
+        }
+        function juego8() {
+            if (turno == 0) { //turno de las X
+                turno = 1;
+                document.getElementById("xturno").style.display = "none";
+                document.getElementById("x8").style.display = "inline";
+                document.getElementById("oturno").style.display = "inline";
+                tresdos = 1
+                comprobar()
+            } else {
+                turno = 0;
+                document.getElementById("oturno").style.display = "none";
+                document.getElementById("o8").style.display = "inline";
+                document.getElementById("xturno").style.display = "inline";
+                tresdos = 2
+                comprobar()
+            }
+            document.getElementById("casilla3,2").disabled = true;
+        }
+        function juego9() {
+            if (turno == 0) { //turno de las X
+                turno = 1;
+                document.getElementById("xturno").style.display = "none";
+                document.getElementById("x9").style.display = "inline";
+                document.getElementById("oturno").style.display = "inline";
+                trestres = 1
+                comprobar()
+            } else {
+                turno = 0;
+                document.getElementById("oturno").style.display = "none";
+                document.getElementById("o9").style.display = "inline";
+                document.getElementById("xturno").style.display = "inline";
+                trestres = 2
+                comprobar()
+            }
+            document.getElementById("casilla3,3").disabled = true;
+        }
+        function comprobar() {
+            let ganador = 0; // 0: no ganador, 1: Gano X, 2: Gano O, 3: Empate
+        
+            // Check all conditions using a switch statement with labeled blocks
+            switch (true) {
+                case (unouno == 1 && unodos == 1 && unotres == 1):
+                case (dosuno == 1 && dosdos == 1 && dostres == 1):
+                case (tresuno == 1 && tresdos == 1 && trestres == 1):
+                case (unouno == 1 && dosuno == 1 && tresuno == 1):
+                case (unodos == 1 && dosdos == 1 && tresdos == 1):
+                case (unotres == 1 && dostres == 1 && trestres == 1):
+                case (unouno == 1 && dosdos == 1 && trestres == 1):
+                case (unotres == 1 && dosdos == 1 && tresuno == 1):
+                    ganador = 1;
+                    break;
+        
+                case (unouno == 2 && unodos == 2 && unotres == 2):
+                case (dosuno == 2 && dosdos == 2 && dostres == 2):
+                case (tresuno == 2 && tresdos == 2 && trestres == 2):
+                case (unouno == 2 && dosuno == 2 && tresuno == 2):
+                case (unodos == 2 && dosdos == 2 && tresdos == 2):
+                case (unotres == 2 && dostres == 2 && trestres == 2):
+                case (unouno == 2 && dosdos == 2 && trestres == 2):
+                case (unotres == 2 && dosdos == 2 && tresuno == 2):
+                    ganador = 2;
+                    break;
+        
+                default:
+                    if (unouno != 0 && unodos != 0 && unotres != 0 &&
+                        dosuno != 0 && dosdos != 0 && dostres != 0 &&
+                        tresuno != 0 && tresdos != 0 && trestres != 0) {
+                        ganador = 3;
+                    }
+                    break;
+            }
+        
+            // Display the result
+            switch (ganador) {
+                case 1:
+                    contadorx2 = contadorx2 + 1
+                    contadorx.innerHTML = contadorx2
+                    resultado.innerHTML = "Gano X"
+                    document.getElementById("resultado").style.display = "block";
+                    sleep(4000).then(() => { document.getElementById("resultado").style.display = "none";})
+                    document.getElementById("casilla1,1").disabled = true;
+                    document.getElementById("casilla1,2").disabled = true;
+                    document.getElementById("casilla1,3").disabled = true;
+                    document.getElementById("casilla2,1").disabled = true;
+                    document.getElementById("casilla2,2").disabled = true;
+                    document.getElementById("casilla2,3").disabled = true;
+                    document.getElementById("casilla3,1").disabled = true;
+                    document.getElementById("casilla3,2").disabled = true;
+                    document.getElementById("casilla3,3").disabled = true;
+                    document.getElementById("xturno").style.display = "none";
+                    document.getElementById("oturno").style.display = "none";
+                    break;
+                case 2:
+                    contadoro2 = contadoro2 + 1
+                    contadoro.innerHTML = contadoro2
+                    resultado.innerHTML = "Gano O"
+                    document.getElementById("resultado").style.display = "block";
+                    sleep(4000).then(() => { document.getElementById("resultado").style.display = "none";})
+                    document.getElementById("casilla1,1").disabled = true;
+                    document.getElementById("casilla1,2").disabled = true;
+                    document.getElementById("casilla1,3").disabled = true;
+                    document.getElementById("casilla2,1").disabled = true;
+                    document.getElementById("casilla2,2").disabled = true;
+                    document.getElementById("casilla2,3").disabled = true;
+                    document.getElementById("casilla3,1").disabled = true;
+                    document.getElementById("casilla3,2").disabled = true;
+                    document.getElementById("casilla3,3").disabled = true;
+                    document.getElementById("xturno").style.display = "none";
+                    document.getElementById("oturno").style.display = "none";
+                    break;
+                case 3:
+                    resultado.innerHTML = "Empate"
+                    document.getElementById("resultado").style.display = "block";
+                    sleep(4000).then(() => { document.getElementById("resultado").style.display = "none";})
+                    document.getElementById("casilla1,1").disabled = true;
+                    document.getElementById("casilla1,2").disabled = true;
+                    document.getElementById("casilla1,3").disabled = true;
+                    document.getElementById("casilla2,1").disabled = true;
+                    document.getElementById("casilla2,2").disabled = true;
+                    document.getElementById("casilla2,3").disabled = true;
+                    document.getElementById("casilla3,1").disabled = true;
+                    document.getElementById("casilla3,2").disabled = true;
+                    document.getElementById("casilla3,3").disabled = true;
+                    document.getElementById("xturno").style.display = "none";
+                    document.getElementById("oturno").style.display = "none";
+                    break;
+                default:
+                    // No winner or tie yet
+                    break;
+            }
+        }
+        function reinicio() {
+            document.getElementById("casilla1,1").disabled = false;
+            document.getElementById("casilla1,2").disabled = false;
+            document.getElementById("casilla1,3").disabled = false;
+            document.getElementById("casilla2,1").disabled = false;
+            document.getElementById("casilla2,2").disabled = false;
+            document.getElementById("casilla2,3").disabled = false;
+            document.getElementById("casilla3,1").disabled = false;
+            document.getElementById("casilla3,2").disabled = false;
+            document.getElementById("casilla3,3").disabled = false;
+            document.getElementById("x1").style.display = "none";
+            document.getElementById("x2").style.display = "none";
+            document.getElementById("x3").style.display = "none";
+            document.getElementById("x4").style.display = "none";
+            document.getElementById("x5").style.display = "none";
+            document.getElementById("x6").style.display = "none";
+            document.getElementById("x7").style.display = "none";
+            document.getElementById("x8").style.display = "none";
+            document.getElementById("x9").style.display = "none";
+            document.getElementById("o1").style.display = "none";
+            document.getElementById("o2").style.display = "none";
+            document.getElementById("o3").style.display = "none";
+            document.getElementById("o4").style.display = "none";
+            document.getElementById("o5").style.display = "none";
+            document.getElementById("o6").style.display = "none";
+            document.getElementById("o7").style.display = "none";
+            document.getElementById("o8").style.display = "none";
+            document.getElementById("o9").style.display = "none";
+            document.getElementById("xturno").style.display = "inline";
+            document.getElementById("botonx").disabled = false;
+            document.getElementById("botono").disabled = false;
+            turno = 0;
+            unouno = 0;
+            unodos = 0;
+            unotres = 0;
+            dosuno = 0;
+            dosdos = 0;
+            dostres = 0;
+            tresuno = 0;
+            tresdos = 0;
+            trestres = 0;
+
+        }
+        function empiezax() {
+            document.getElementById("botonx").disabled = true;
+            document.getElementById("botono").disabled = true;
+            turno = 0
+            document.getElementById("xturno").style.display = "inline";
+            document.getElementById("oturno").style.display = "none";
+        }
+        function empiezao() {
+            document.getElementById("botono").disabled = true;
+            document.getElementById("botonx").disabled = true;
+            turno = 1
+            document.getElementById("oturno").style.display = "inline";
+            document.getElementById("xturno").style.display = "none";
+        }
+        
+
+    </script>
+</head>
+<body>
+    <div class="cuadro"></div>
+    <div class="linea1" style="position: absolute; top: 50px; left: 550px;"></div>
+    <div class="linea1" style="position: absolute; top: 50px; left: 755px;"></div>
+    <div class="linea1" style="position: absolute; top: 450px; left: 550px;"></div>
+    <div class="linea1" style="position: absolute; top: 450px; left: 755px;"></div>
+    <div class="linea2" style="position: absolute; top: 250px; left: 350px;"></div>
+    <div class="linea2" style="position: absolute; top: 250px; left: 760px;"></div>
+    <div class="linea2" style="position: absolute; top: 455px; left: 350px;"></div>
+    <div class="linea2" style="position: absolute; top: 455px; left: 760px;"></div>
+    <button class="boton_casilla" style="position: absolute; top:50px; left: 350px;" onclick="juego1()" id="casilla1,1"><img src="x.png" style="width: 200px; height: 200px; position:absolute; bottom: 1px; left: 1px; display:none;" id="x1"><img src="o.png" style="width: 200px; height: 200px; position:absolute; bottom: 1px; left: 1px; display:none;" id="o1"></button> <!--Casilla 1,1-->
+    <button class="boton_casilla" style="position: absolute; top:50px; left: 555px;" onclick="juego2()" id="casilla1,2"><img src="x.png" style="width: 200px; height: 200px; position:absolute; bottom: 1px; left: 1px; display:none;" id="x2"><img src="o.png" style="width: 200px; height: 200px; position:absolute; bottom: 1px; left: 1px; display:none;" id="o2"></button> <!--Casilla 1,2-->
+    <button class="boton_casilla" style="position: absolute; top:50px; left: 760px;" onclick="juego3()" id="casilla1,3"><img src="x.png" style="width: 200px; height: 200px; position:absolute; bottom: 1px; left: 1px; display:none;" id="x3"><img src="o.png" style="width: 200px; height: 200px; position:absolute; bottom: 1px; left: 1px; display:none;" id="o3"></button> <!--Casilla 1,3-->
+    <button class="boton_casilla" style="position: absolute; top:255px; left: 350px;" onclick="juego4()" id="casilla2,1"><img src="x.png" style="width: 200px; height: 200px; position:absolute; bottom: 1px; left: 1px; display:none;" id="x4"><img src="o.png" style="width: 200px; height: 200px; position:absolute; bottom: 1px; left: 1px; display:none;" id="o4"></button> <!--Casilla 2,1-->
+    <button class="boton_casilla" style="position: absolute; top:255px; left: 555px;" onclick="juego5()" id="casilla2,2"><img src="x.png" style="width: 200px; height: 200px; position:absolute; bottom: 1px; left: 1px; display:none;" id="x5"><img src="o.png" style="width: 200px; height: 200px; position:absolute; bottom: 1px; left: 1px; display:none;" id="o5"></button> <!--Casilla 2,2-->
+    <button class="boton_casilla" style="position: absolute; top:255px; left: 760px;" onclick="juego6()" id="casilla2,3"><img src="x.png" style="width: 200px; height: 200px; position:absolute; bottom: 1px; left: 1px; display:none;" id="x6"><img src="o.png" style="width: 200px; height: 200px; position:absolute; bottom: 1px; left: 1px; display:none;" id="o6"></button> <!--Casilla 2,3-->
+    <button class="boton_casilla" style="position: absolute; top:460px; left: 350px; height: 190px;" onclick="juego7()" id="casilla3,1"><img src="x.png" style="width: 200px; height: 200px; position:absolute; top: 1px; left: 1px; display:none;" id="x7"><img src="o.png" style="width: 200px; height: 200px; position:absolute; bottom: 1px; left: 1px; display:none;" id="o7"></button> <!--Casilla 3,1-->
+    <button class="boton_casilla" style="position: absolute; top:460px; left: 555px; height: 190px;" onclick="juego8()" id="casilla3,2"><img src="x.png" style="width: 200px; height: 200px; position:absolute; top: 1px; left: 1px; display:none;" id="x8"><img src="o.png" style="width: 200px; height: 200px; position:absolute; bottom: 1px; left: 1px; display:none;" id="o8"></button> <!--Casilla 3,2-->
+    <button class="boton_casilla" style="position: absolute; top:460px; left: 760px; height: 190px;" onclick="juego9()" id="casilla3,3"><img src="x.png" style="width: 200px; height: 200px; position:absolute; top: 1px; left: 1px; display:none;" id="x9"><img src="o.png" style="width: 200px; height: 200px; position:absolute; bottom: 1px; left: 1px; display:none;" id="o9"></button> <!--Casilla 3,3-->
+    <button class="botones_utilidad" style="position: absolute; top: 150px; left: 1000px;" onclick="reinicio()">Reiniciar</button>
+    <div class="textos" style="position: absolute; top: 30px; left: 50px;">Turno de:</div>
+    <div class="boton_casilla" style="position: absolute; top: 100px;" id="turno"><img src="x.png" style="width: 200px; height: 200px; position:absolute;" id="xturno"><img src="o.png" style="width: 200px; height: 200px; position:absolute; display:none;" id="oturno"></div>
+    <div class="resultado" id="resultado"></div>
+    <button class="botones_utilidad" style="position: absolute; top: 400px;" onclick="empiezax()" id="botonx">Empiezan X</button>
+    <button class="botones_utilidad" style="position: absolute; top: 400px; left: 120px;" onclick="empiezao()" id="botono">Empiezan O</button>
+    <div class="textos" style="position: absolute; top: 300px; left: 1000px;">Veces ganadas X:</div>
+    <div class="textos" style="position: absolute; top: 500px; left: 1000px;">Veces ganadas O:</div>
+    <div class="contadores" id="contadorx" style="position: absolute; top: 350px; left: 1100px;">0</div>
+    <div class="contadores" id="contadoro" style="position: absolute; top: 550px; left: 1100px;">0</div>
+    
+</body>
+</html>
